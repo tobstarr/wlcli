@@ -4,6 +4,7 @@ import "strings"
 
 type pushAction struct {
 	Payload []string `cli:"arg required"`
+	Tags    []string `cli:"opt --tags"`
 }
 
 func (r *pushAction) Run() error {
@@ -15,7 +16,11 @@ func (r *pushAction) Run() error {
 	if err != nil {
 		return err
 	}
-	t := &task{ListID: ib.ID, Title: strings.Join(r.Payload, " ")}
+	parts := r.Payload
+	for _, t := range r.Tags {
+		parts = append(parts, "#"+t)
+	}
+	t := &task{ListID: ib.ID, Title: strings.Join(parts, " ")}
 	_, err = cl.CreateTask(t)
 	return err
 }
