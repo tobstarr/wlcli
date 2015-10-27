@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -29,4 +30,9 @@ func (c *client) Inbox() (*list, error) {
 
 func (c *client) Lists() (out []*list, err error) {
 	return out, c.load("GET", "lists", nil, &out)
+}
+
+func (c *client) List(id int) (l *list, err error) {
+	return l, c.load("GET", "lists/"+strconv.Itoa(id), nil, &l)
+
 }

@@ -15,6 +15,7 @@ func main() {
 	if c != nil && c.ListID > 0 {
 		router.Register("push", &pushAction{listID: c.ListID}, "Push a task to the current list")
 		router.Register("list", &listInboxAction{listID: c.ListID}, "List current list")
+		router.Register("edit", &edit{listID: c.ListID}, "Edit current list")
 	}
 	router.Register("inbox/push", &pushAction{}, "Push a task to inbox")
 	router.Register("inbox/list", &listInboxAction{}, "List Inbox")
