@@ -17,6 +17,10 @@ You can get this information by going to https://developer.wunderlist.com/apps
 * Fill in some dummy URLs at `APP URL` and `Auth Callback URL`
 * click `Create Access Token`
 
+## Installation
+
+	go get -v github.com/tobstarr/wlcli`
+
 ## Usage
 
 ### Push a new task to your inbox
