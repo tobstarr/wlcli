@@ -8,6 +8,8 @@ import (
 	"github.com/tobstarr/wlcli/Godeps/_workspace/src/github.com/BurntSushi/toml"
 )
 
+const configFileName = ".wlcli"
+
 type Config struct {
 	ListID int `toml:"list_id"`
 }
@@ -18,7 +20,7 @@ func loadCurrentConfig() (c *Config, err error) {
 		return nil, err
 	}
 	for current != "" {
-		path := filepath.Join(current, ".wlcli")
+		path := filepath.Join(current, configFileName)
 		dbg.Printf("testing path %s", path)
 		c, err := loadConfig(path)
 		if err != nil {

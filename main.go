@@ -17,11 +17,12 @@ func main() {
 		router.Register("list", &listInboxAction{listID: c.ListID}, "List current list")
 		router.Register("edit", &edit{listID: c.ListID}, "Edit current list")
 	}
-	router.Register("inbox/push", &pushAction{}, "Push a task to inbox")
 	router.Register("inbox/list", &listInboxAction{}, "List Inbox")
-	router.Register("tasks/delete", &deleteTasks{}, "Delete Tasks")
-	router.Register("tasks/complete", &completeTasks{}, "Complete Tasks")
+	router.Register("inbox/push", &pushAction{}, "Push a task to inbox")
+	router.Register("init", &initAction{}, "Initialize "+configFileName+" config file")
 	router.Register("lists/list", &listLists{}, "List Lists")
+	router.Register("tasks/complete", &completeTasks{}, "Complete Tasks")
+	router.Register("tasks/delete", &deleteTasks{}, "Delete Tasks")
 	switch err := router.RunWithArgs(); err {
 	case nil, cli.ErrorHelpRequested, cli.ErrorNoRoute:
 		// ignore
