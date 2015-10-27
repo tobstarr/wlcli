@@ -89,5 +89,18 @@ func (c *client) Task(id int) (t *task, err error) {
 func (c *client) DeleteTask(id, revision int) error {
 	_, err := c.request("DELETE", "tasks/"+strconv.Itoa(id)+"?revision="+strconv.Itoa(revision), nil)
 	return err
+}
 
+func (c *client) CompleteTask(id int) error {
+	t, err := c.Task(id)
+	if err != nil {
+		return err
+	}
+	b, err := json.Marshal(map[string]interface{}{"completed": true, "revision": t.Revision})
+	if err != nil {
+		return err
+	}
+	_, err = c.request("PATCH", "tasks/"+strconv.Itoa(id), bytes.NewReader(b))
+	return err
+	return nil
 }
