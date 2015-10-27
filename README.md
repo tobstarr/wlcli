@@ -23,6 +23,16 @@ You can get this information by going to https://developer.wunderlist.com/apps
 
 ## Usage
 
+	wlcli inbox list                    List Inbox
+	wlcli inbox push       <Payload>... Push a task to inbox
+	wlcli tasks complete   <IDs>...     Complete Tasks
+	wlcli tasks delete     <IDs>...     Delete Tasks
+
+### useful shell aliases
+
+	alias wl="wlcli $@"
+	alias inbox="wlcli inbox $@"
+
 ### Push a new task to your inbox
 
 	wlcli inbox push remember the milk
