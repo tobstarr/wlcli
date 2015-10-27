@@ -102,5 +102,4 @@ func (c *client) CompleteTask(id int) error {
 	}
 	_, err = c.request("PATCH", "tasks/"+strconv.Itoa(id), bytes.NewReader(b))
 	return err
-	return nil
 }
