@@ -9,7 +9,8 @@ import (
 )
 
 type listInboxAction struct {
-	Tag string `cli:"opt --tag"`
+	listID int
+	Tag    string `cli:"opt --tag"`
 }
 
 func (r *listInboxAction) Run() error {
@@ -17,14 +18,23 @@ func (r *listInboxAction) Run() error {
 	if err != nil {
 		return err
 	}
-	ib, err := cl.Inbox()
+	listID := r.listID
+	if listID == 0 {
+		ib, err := cl.Inbox()
+		if err != nil {
+			return err
+		}
+		listID = ib.ID
+	}
+
+	tasks, err := cl.Tasks(ListID(listID))
 	if err != nil {
 		return err
 	}
 
-	tasks, err := cl.Tasks(ListID(ib.ID))
-	if err != nil {
-		return err
+	if len(tasks) == 0 {
+		fmt.Printf("no tasks found. use `wlcli push` to create one\n")
+		return nil
 	}
 	sort.Sort(tasks)
 	t := gocli.NewTable()
