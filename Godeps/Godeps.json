@@ -12,6 +12,10 @@
 		{
 			"ImportPath": "github.com/dynport/dgtk/tagparse",
 			"Rev": "0542a8bc57a0e0c31d81a0ed629cf847cd0c0429"
+		},
+		{
+			"ImportPath": "github.com/dynport/gocli",
+			"Rev": "bc2ff70316964536247422e47f87fc84e2c9d53a"
 		}
 	]
 }

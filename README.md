@@ -25,6 +25,10 @@ You can get this information by going to https://developer.wunderlist.com/apps
 
 ### Push a new task to your inbox
 
-	wlcli push remember the milk
+	wlcli inbox push remember the milk
+
+### List inbox
+
+	wlcli inbox list
 
 creates a new task with title "remember the milk" in your inbix list.
