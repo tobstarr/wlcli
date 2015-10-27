@@ -23,10 +23,15 @@ You can get this information by going to https://developer.wunderlist.com/apps
 
 ## Usage
 
+	wlcli edit                          Edit current list
 	wlcli inbox list                    List Inbox
 	wlcli inbox push       <Payload>... Push a task to inbox
+	wlcli list                          List current list
+	wlcli lists list                    List Lists
+	wlcli push             <Payload>... Push a task to the current list
 	wlcli tasks complete   <IDs>...     Complete Tasks
 	wlcli tasks delete     <IDs>...     Delete Tasks
+
 
 ### the current list
 
