@@ -27,8 +27,14 @@ You can get this information by going to https://developer.wunderlist.com/apps
 
 	wlcli inbox push remember the milk
 
+creates a new task with title "remember the milk" in your inbix list.
+
 ### List inbox
 
 	wlcli inbox list
 
-creates a new task with title "remember the milk" in your inbix list.
+lists all tasks in the inbox list
+
+## To Come
+
+* "dispatch inbox": move tasks from inbox into other lists
