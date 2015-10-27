@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dynport/dgtk/cli"
+	"github.com/tobstarr/wlcli/Godeps/_workspace/src/github.com/dynport/dgtk/cli"
 )
 
 func main() {
