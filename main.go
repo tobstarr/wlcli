@@ -9,13 +9,10 @@ import (
 
 func main() {
 	l := log.New(os.Stderr, "", 0)
-	c, err := loadCurrentConfig()
-	if err != nil {
-		l.Printf("err=%s", err)
-	}
 	router := cli.NewRouter()
 
-	if c.ListID > 0 {
+	c, _ := loadCurrentConfig()
+	if c != nil && c.ListID > 0 {
 		router.Register("push", &pushAction{listID: c.ListID}, "Push a task to the current list")
 		router.Register("list", &listInboxAction{listID: c.ListID}, "List current list")
 	}

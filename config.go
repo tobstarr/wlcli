@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 
 	"github.com/tobstarr/wlcli/Godeps/_workspace/src/github.com/BurntSushi/toml"
 )
@@ -12,7 +13,30 @@ type Config struct {
 }
 
 func loadCurrentConfig() (c *Config, err error) {
-	f, err := os.Open(".wlcli")
+	current, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	for current != "" {
+		path := filepath.Join(current, ".wlcli")
+		dbg.Printf("testing path %s", path)
+		c, err := loadConfig(path)
+		if err != nil {
+			newCurrent := filepath.Dir(current)
+			if newCurrent == current {
+				break
+			}
+			current = newCurrent
+		} else {
+			dbg.Printf("found path %s", path)
+			return c, nil
+		}
+	}
+	return nil, nil
+}
+
+func loadConfig(path string) (c *Config, err error) {
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
