@@ -86,8 +86,12 @@ func (c *client) Task(id int) (t *task, err error) {
 	return t, c.load("GET", "tasks/"+strconv.Itoa(id), nil, &t)
 }
 
-func (c *client) DeleteTask(id, revision int) error {
-	_, err := c.request("DELETE", "tasks/"+strconv.Itoa(id)+"?revision="+strconv.Itoa(revision), nil)
+func (c *client) DeleteTask(id int) error {
+	t, err := c.Task(id)
+	if err != nil {
+		return err
+	}
+	_, err = c.request("DELETE", "tasks/"+strconv.Itoa(id)+"?revision="+strconv.Itoa(t.Revision), nil)
 	return err
 }
 

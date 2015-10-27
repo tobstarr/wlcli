@@ -10,12 +10,7 @@ func (r *deleteTasks) Run() error {
 		return err
 	}
 	for _, i := range r.IDs {
-		task, err := cl.Task(i)
-		if err != nil {
-			return err
-		}
-
-		if err := cl.DeleteTask(task.ID, task.Revision); err != nil {
+		if err := cl.DeleteTask(i); err != nil {
 			return err
 		}
 	}
