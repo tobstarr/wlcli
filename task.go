@@ -96,14 +96,26 @@ func (c *client) DeleteTask(id int) error {
 }
 
 func (c *client) CompleteTask(id int) error {
-	t, err := c.Task(id)
+	return c.UpdateTask(&UpdateTask{ID: id, Completed: b2p(true)})
+}
+
+type UpdateTask struct {
+	ID        int     `json:"id,omitempty"`
+	Revision  int     `json:"revision,omitempty"`
+	Completed *bool   `json:"completed,omitempty"`
+	Title     *string `json:"title,omitempty"`
+}
+
+func (c *client) UpdateTask(update *UpdateTask) error {
+	t, err := c.Task(update.ID)
 	if err != nil {
 		return err
 	}
-	b, err := json.Marshal(map[string]interface{}{"completed": true, "revision": t.Revision})
+	update.Revision = t.Revision
+	b, err := json.Marshal(update)
 	if err != nil {
 		return err
 	}
-	_, err = c.request("PATCH", "tasks/"+strconv.Itoa(id), bytes.NewReader(b))
+	_, err = c.request("PATCH", "tasks/"+strconv.Itoa(update.ID), bytes.NewReader(b))
 	return err
 }
