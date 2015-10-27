@@ -22,7 +22,7 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 }
 
 func loadTransport() (c *transport, err error) {
-	f, err := os.Open(os.ExpandEnv("$HOME/.wundercli/config.json"))
+	f, err := os.Open(os.ExpandEnv("$HOME/.wlcli/config.json"))
 	if err != nil {
 		return nil, err
 	}
