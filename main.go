@@ -12,6 +12,7 @@ func main() {
 	router := cli.NewRouter()
 	router.Register("inbox/push", &pushAction{}, "Push a task to inbox")
 	router.Register("inbox/list", &listInboxAction{}, "List Inbox")
+	router.Register("tasks/delete", &deleteTasks{}, "Delete Tasks")
 	switch err := router.RunWithArgs(); err {
 	case nil, cli.ErrorHelpRequested, cli.ErrorNoRoute:
 		// ignore
