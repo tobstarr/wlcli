@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 const defaultEndpoint = "https://a.wunderlist.com/api/v1"
@@ -39,7 +40,7 @@ func (c *Client) load(method, path string, payload io.Reader, i interface{}) err
 }
 
 func (c *Client) request(method, path string, payload io.Reader) (*http.Response, error) {
-	u := c.Endpoint + "/" + path
+	u := c.Endpoint + "/" + strings.TrimPrefix(path, "/")
 	dbg.Printf("[REQ] method=%s url=%s", method, u)
 	req, err := http.NewRequest(method, u, payload)
 	if err != nil {
