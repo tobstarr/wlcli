@@ -11,16 +11,20 @@ import (
 const defaultEndpoint = "https://a.wunderlist.com/api/v1"
 
 func loadClient() (*client, error) {
+	c := &client{Endpoint: defaultEndpoint}
 	t, err := loadTransport()
 	if err != nil {
 		return nil, err
 	}
-	return &client{Endpoint: defaultEndpoint, Client: &http.Client{Transport: t}}, nil
+	t.client = c
+	c.authClient = &http.Client{Transport: t}
+	return c, nil
 }
 
 type client struct {
-	Endpoint string
-	Client   *http.Client
+	Endpoint   string
+	Client     *http.Client // use this to hook in your custom client
+	authClient *http.Client
 }
 
 func (c *client) load(method, path string, payload io.Reader, i interface{}) error {
@@ -39,7 +43,7 @@ func (c *client) request(method, path string, payload io.Reader) (*http.Response
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	rsp, err := c.Client.Do(req)
+	rsp, err := c.authClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

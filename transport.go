@@ -10,6 +10,7 @@ import (
 type transport struct {
 	ClientID    string `json:"client_id,omitempty"`
 	AccessToken string `json:"access_token,omitempty"`
+	client      *client
 }
 
 func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
@@ -18,7 +19,14 @@ func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {
 	}
 	r.Header.Set("X-Client-ID", t.ClientID)
 	r.Header.Set("X-Access-Token", t.AccessToken)
-	return http.DefaultClient.Do(r)
+	return t.httpClient().Do(r)
+}
+
+func (t *transport) httpClient() *http.Client {
+	if t.client != nil && t.client.Client != nil {
+		return t.client.Client
+	}
+	return http.DefaultClient
 }
 
 func loadTransport() (c *transport, err error) {
