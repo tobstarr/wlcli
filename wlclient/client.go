@@ -10,6 +10,8 @@ import (
 
 const defaultEndpoint = "https://a.wunderlist.com/api/v1"
 
+// Documentation at: https://developer.wunderlist.com/documentation
+
 func New(clientID, accessToken string) (*Client, error) {
 	if clientID == "" || accessToken == "" {
 		return nil, fmt.Errorf("clientID=%q and accessToken=%q must bost be present", clientID, accessToken)
