@@ -1,4 +1,4 @@
-package main
+package wlclient
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type task struct {
+type Task struct {
 	ID              int        `json:"id,omitempty"`
 	ListID          int        `json:"list_id,omitempty"`
 	Title           string     `json:"title,omitempty"`
@@ -23,7 +23,7 @@ type task struct {
 	Starred         *bool      `json:"starred,omitempty"`
 }
 
-func (c *client) CreateTask(in *task) (out *task, err error) {
+func (c *Client) CreateTask(in *Task) (out *Task, err error) {
 	b, err := json.Marshal(in)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (t *TaskOpt) Encode() string {
 	return v.Encode()
 }
 
-type Tasks []*task
+type Tasks []*Task
 
 func (list Tasks) Len() int {
 	return len(list)
@@ -68,7 +68,7 @@ func (list Tasks) Less(a, b int) bool {
 	return list[a].CreatedAt.Before(*list[b].CreatedAt)
 }
 
-func (c *client) Tasks(opts ...func(*TaskOpt)) (out Tasks, err error) {
+func (c *Client) Tasks(opts ...func(*TaskOpt)) (out Tasks, err error) {
 	i := &TaskOpt{}
 
 	for _, f := range opts {
@@ -82,11 +82,11 @@ func (c *client) Tasks(opts ...func(*TaskOpt)) (out Tasks, err error) {
 
 }
 
-func (c *client) Task(id int) (t *task, err error) {
+func (c *Client) Task(id int) (t *Task, err error) {
 	return t, c.load("GET", "tasks/"+strconv.Itoa(id), nil, &t)
 }
 
-func (c *client) DeleteTask(id int) error {
+func (c *Client) DeleteTask(id int) error {
 	t, err := c.Task(id)
 	if err != nil {
 		return err
@@ -95,7 +95,7 @@ func (c *client) DeleteTask(id int) error {
 	return err
 }
 
-func (c *client) CompleteTask(id int) error {
+func (c *Client) CompleteTask(id int) error {
 	return c.UpdateTask(&UpdateTask{ID: id, Completed: b2p(true)})
 }
 
@@ -106,7 +106,7 @@ type UpdateTask struct {
 	Title     *string `json:"title,omitempty"`
 }
 
-func (c *client) UpdateTask(update *UpdateTask) error {
+func (c *Client) UpdateTask(update *UpdateTask) error {
 	t, err := c.Task(update.ID)
 	if err != nil {
 		return err

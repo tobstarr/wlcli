@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/tobstarr/wlcli/Godeps/_workspace/src/github.com/dynport/gocli"
+	"github.com/tobstarr/wlcli/wlclient"
 )
 
 type listInboxAction struct {
@@ -27,7 +28,7 @@ func (r *listInboxAction) Run() error {
 		listID = ib.ID
 	}
 
-	tasks, err := cl.Tasks(ListID(listID))
+	tasks, err := cl.Tasks(wlclient.ListID(listID))
 	if err != nil {
 		return err
 	}

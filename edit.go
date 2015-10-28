@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/tobstarr/wlcli/wlclient"
 )
 
 type edit struct {
@@ -27,7 +29,7 @@ func (r *edit) Run() error {
 	if editor == "" {
 		return fmt.Errorf("EDITOR must be set in ENV")
 	}
-	tasks, err := cl.Tasks(ListID(r.listID))
+	tasks, err := cl.Tasks(wlclient.ListID(r.listID))
 	if err != nil {
 		return err
 	}
@@ -70,7 +72,7 @@ type actions []action
 
 var l = log.New(os.Stderr, "", 0)
 
-func extractActions(cl *client, listID int, in io.Reader) (out actions, err error) {
+func extractActions(cl *wlclient.Client, listID int, in io.Reader) (out actions, err error) {
 	scanner := bufio.NewScanner(in)
 	for scanner.Scan() {
 
@@ -85,7 +87,7 @@ func extractActions(cl *client, listID int, in io.Reader) (out actions, err erro
 	return out, scanner.Err()
 }
 
-func extractActionFromLine(cl *client, listID int, line string) (action, error) {
+func extractActionFromLine(cl *wlclient.Client, listID int, line string) (action, error) {
 	if strings.HasPrefix(line, "# ") {
 		return nil, nil
 	}
@@ -95,7 +97,7 @@ func extractActionFromLine(cl *client, listID int, line string) (action, error) 
 	}
 	if fields[0] == "*" && len(fields) > 1 {
 		return func() error {
-			_, err := cl.CreateTask(&task{ListID: listID, Title: strings.Join(fields[1:], " ")})
+			_, err := cl.CreateTask(&wlclient.Task{ListID: listID, Title: strings.Join(fields[1:], " ")})
 			return err
 		}, nil
 	}
@@ -113,7 +115,7 @@ func extractActionFromLine(cl *client, listID int, line string) (action, error) 
 		return func() error {
 			txt := strings.Join(fields[2:], " ")
 			dbg.Printf("updating %d to %q", id, txt)
-			return cl.UpdateTask(&UpdateTask{ID: id, Title: s2p(txt)})
+			return cl.UpdateTask(&wlclient.UpdateTask{ID: id, Title: s2p(txt)})
 		}, nil
 	case "c", "complete":
 		return func() error { return cl.CompleteTask(id) }, nil
@@ -126,7 +128,7 @@ func extractActionFromLine(cl *client, listID int, line string) (action, error) 
 	}
 }
 
-func writeTasksToTempFile(list *list, tasks []*task) (path, dir string, err error) {
+func writeTasksToTempFile(list *wlclient.List, tasks wlclient.Tasks) (path, dir string, err error) {
 	buf := &bytes.Buffer{}
 	for _, t := range tasks {
 		if _, err := fmt.Fprintf(buf, "k %d %s\n", t.ID, t.Title); err != nil {

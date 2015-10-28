@@ -1,4 +1,4 @@
-package main
+package wlclient
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 )
 
 type transport struct {
-	ClientID    string `json:"client_id,omitempty"`
-	AccessToken string `json:"access_token,omitempty"`
-	client      *client
+	ClientID    string
+	AccessToken string
+	client      *Client
 }
 
 func (t *transport) RoundTrip(r *http.Request) (*http.Response, error) {

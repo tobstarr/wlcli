@@ -1,4 +1,4 @@
-package main
+package wlclient
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-type list struct {
+type List struct {
 	ID        int       `json:"id,omitempty"`
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	Title     string    `json:"title,omitempty"`
@@ -15,7 +15,7 @@ type list struct {
 	Revision  int       `json:"revision,omitempty"`
 }
 
-func (c *client) Inbox() (*list, error) {
+func (c *Client) Inbox() (*List, error) {
 	lists, err := c.Lists()
 	if err != nil {
 		return nil, err
@@ -28,11 +28,11 @@ func (c *client) Inbox() (*list, error) {
 	return nil, fmt.Errorf("inbox not found")
 }
 
-func (c *client) Lists() (out []*list, err error) {
+func (c *Client) Lists() (out []*List, err error) {
 	return out, c.load("GET", "lists", nil, &out)
 }
 
-func (c *client) List(id int) (l *list, err error) {
+func (c *Client) List(id int) (l *List, err error) {
 	return l, c.load("GET", "lists/"+strconv.Itoa(id), nil, &l)
 
 }

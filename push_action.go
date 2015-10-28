@@ -1,6 +1,10 @@
 package main
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/tobstarr/wlcli/wlclient"
+)
 
 type pushAction struct {
 	listID  int
@@ -25,7 +29,7 @@ func (r *pushAction) Run() error {
 	for _, t := range r.Tags {
 		parts = append(parts, "#"+t)
 	}
-	t := &task{ListID: listID, Title: strings.Join(parts, " ")}
+	t := &wlclient.Task{ListID: listID, Title: strings.Join(parts, " ")}
 	_, err = cl.CreateTask(t)
 	return err
 }
