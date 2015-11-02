@@ -2,7 +2,6 @@ package wlclient
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -33,7 +32,6 @@ func testServer() *httptest.Server {
 }
 
 func testServerHandler(w http.ResponseWriter, r *http.Request) {
-	log.Printf("method=%s url=%s", r.Method, r.URL)
 	switch r.Method + ":" + r.URL.String() {
 	case "GET:/lists":
 		serveJSON(w, []*List{{ID: 1, Title: "List 1"}})
