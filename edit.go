@@ -75,7 +75,6 @@ var l = log.New(os.Stderr, "", 0)
 func extractActions(cl *wlclient.Client, listID int, in io.Reader) (out actions, err error) {
 	scanner := bufio.NewScanner(in)
 	for scanner.Scan() {
-
 		action, err := extractActionFromLine(cl, listID, scanner.Text())
 		if err != nil {
 			l.Printf("WARN: %s", err)
@@ -88,7 +87,7 @@ func extractActions(cl *wlclient.Client, listID int, in io.Reader) (out actions,
 }
 
 func extractActionFromLine(cl *wlclient.Client, listID int, line string) (action, error) {
-	if strings.HasPrefix(line, "# ") {
+	if isComment(line) {
 		return nil, nil
 	}
 	fields := strings.Fields(line)
@@ -126,6 +125,10 @@ func extractActionFromLine(cl *wlclient.Client, listID int, line string) (action
 	default:
 		return nil, fmt.Errorf("action %q not supported", action)
 	}
+}
+
+func isComment(line string) bool {
+	return strings.HasPrefix(line, "# ")
 }
 
 func writeTasksToTempFile(list *wlclient.List, tasks wlclient.Tasks) (path, dir string, err error) {
