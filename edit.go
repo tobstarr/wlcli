@@ -17,6 +17,7 @@ import (
 )
 
 type edit struct {
+	ListID int `cli:"arg"`
 	listID int
 }
 
@@ -29,11 +30,16 @@ func (r *edit) Run() error {
 	if editor == "" {
 		return fmt.Errorf("EDITOR must be set in ENV")
 	}
-	tasks, err := cl.Tasks(wlclient.ListID(r.listID))
+
+	listID := r.ListID
+	if listID == 0 {
+		listID = r.listID
+	}
+	tasks, err := cl.Tasks(wlclient.ListID(listID))
 	if err != nil {
 		return err
 	}
-	list, err := cl.List(r.listID)
+	list, err := cl.List(listID)
 	if err != nil {
 		return err
 	}
@@ -53,7 +59,7 @@ func (r *edit) Run() error {
 	if err != nil {
 		return err
 	}
-	actions, err := extractActions(cl, r.listID, f)
+	actions, err := extractActions(cl, listID, f)
 	f.Close()
 	if err != nil {
 		return err
