@@ -19,7 +19,7 @@ type Task struct {
 	Completed       *bool      `json:"completed,omitempty"`
 	RecurrenceType  *string    `json:"recurrence_type,omitempty"`
 	RecurrenceCount *int       `json:"recurrence_count,omitempty"`
-	DueDate         *time.Time `json:"due_date,omitempty"`
+	DueDate         *string    `json:"due_date,omitempty"`
 	Starred         *bool      `json:"starred,omitempty"`
 }
 
